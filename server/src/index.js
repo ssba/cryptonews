@@ -14,17 +14,19 @@ const redis = createClient({
   }
 });
 
+function debugMessage(message) {
+  if (DEBUG) {
+    console.log(message);
+  }
+}
+
 redis.on('error', err => console.log('Redis Client Error', err));
 
 (async () => {
   await redis.connect().then(() => {
-    if(DEBUG){
-      console.log('Connected to Redis');
-    }
+      debugMessage('Connected to Redis');
   }).catch(err => {
-    if(DEBUG){
-      console.error('Failed to connect to Redis:', err);
-    }
+      debugMessage('Failed to connect to Redis:'. err);
   })
 
   app.listen(port, () => {
@@ -33,12 +35,6 @@ redis.on('error', err => console.log('Redis Client Error', err));
 })();
 
 app.use(cors())
-
-function debugMessage(message) {
-  if (DEBUG) {
-    console.log(message);
-  }
-}
 
 async function fetchCoin(id) {
 
